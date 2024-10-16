@@ -5,9 +5,10 @@ This is the codes of the PPGC-DVAE in our manuscript "A Conditional Denoising VA
 ### requirement
 
 + python == 3.8.15
-+ torch == 
-+ rdkit == 
-+ tqdm ==
++ torch == 1.12.1
++ rdkit-pypi == 2022.9.5
++ tqdm == 4.64.1
++ biopython == 1.83
 
 ### Dataset
 
@@ -30,8 +31,8 @@ If you want to replace it with your own dataset, please prepare it as follows:
 + Open `predict1.py` in the `utils/` directory and modify the corresponding line of code. The same applies to the validation and test sets.
 
   ```
-  fasta_file1 = "data/train.fasta"  # 替换为你的FASTA文件路径
-  output_file1 = "data/train.csv"  # 输出CSV文件路径
+  fasta_file1 = "data/train.fasta"  # Replace it with the path to your FASTA file.
+  output_file1 = "data/train.csv"  # Output the path to the CSV file.
   ```
 
 Of course, if you plan to use the model directly without training, the model's weight file `best_model1.pth` is also provided here.
