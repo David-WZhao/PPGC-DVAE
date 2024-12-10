@@ -57,35 +57,14 @@ def generate_sequences(model, num_sequences, max_len=50):
             with torch.no_grad():
                 z = torch.randn(1, model.d_model).to(device)
 
-                # tar_sequence_idx = []
-                #
-                # aa_to_idx = {aa: idx for idx, aa in idx_to_aa.items()}
-                #
-                #
-                #
-                # tar_sequence_idx = [aa_to_idx[aa] for aa in target]
-                # tar_sequence_idx.append(21)
-                # tar_sequence_idx = torch.tensor(tar_sequence_idx, dtype=torch.long)
-                #
-                # padding = torch.zeros(50-(len(target)+1), dtype=torch.long, device=device)
-                #
-                # tar_sequence_idx = torch.cat([tar_sequence_idx.to(device), padding])
-                # tar_sequence_idx = tar_sequence_idx.unsqueeze(0)
+                
                 tar = torch.zeros(1,1, model.d_model).to(device)
-                # tar_indices = torch.randint(1, 21, (1, 1)).to(device)  # 形状为 (1, 1)
-                # tar = model.embedding1(tar_indices)
-                # print(z.shape,tar.shape)
-                # print(tar_sequence_idx)
-                # print(std_len)
+                
 
                 generated_seq = model.generate(tar, z, properties)
                 # print(generated_seq.shape)
 
-            # 只取前 seq_len 个氨基酸
-            # generated_seq = generated_seq[:seq_len]
-            # print(generated_seq)
-            # 将索引转换为氨基酸字符
-            # print(generated_seq)
+            
 
             # print(generated_seq.shape)
             sequence = ''.join([idx_to_aa.get(idx, 'X') for idx in generated_seq])
@@ -107,77 +86,13 @@ def generate_sequences(model, num_sequences, max_len=50):
 # 生成 1000 个序列
 num_sequences = 100
 num = 0
-# target = 'ISILEKAILMLNPIMEKLFVTELVMKTEYSIHTN'
-# target = 'KWCFRVCYRGICYRRCR'
+
 sequences = generate_sequences(model, num_sequences)
 
 for seq in sequences:
     #print(1)
-    #print(seq)
-    #print('标准：')
-    if not seq:
-        continue
-    #print(seq)
-    a = calculate_properties(seq)
-    properties_array = []
-
-    if a is None:
-        print(f"Warning: properties_dict is None for sequence {seq}. Using default zero array.")
-        properties_array = [0.0] * 10  # 使用包含10个零的数组
-    else:
-        for value in a.values():
-
-            if isinstance(value, tuple):
-                properties_array.extend(value)  # 如果是元组，展开并添加到列表中
-            else:
-                properties_array.append(value)  # 否则，直接添加到列表中
-    normal = normalize_matrix(properties_array)
-    #print(normal)
-    differences = np.abs(properties - normal)
-    # 选取后九位元素
-    last_nine = differences[-10:]
-
-    # 计算后九位元素的和
-    total_sum = np.sum(last_nine)
-
-    #print(normal)
-    #print(properties_array)
-    # if np.all(last_nine < 0.15) and all(x > 0 for x in properties_array):
-    # if np.all(last_nine < 0.1) :
-    if  np.all(last_nine < 0.2):
-        num +=1
-        print(seq)
-        print(normal)
-        #print(properties_array)
-print(num)
-# with open('generated_sequences_001.csv', 'w') as f:
-#     writer = csv.writer(f)
-#
-#     # 写入CSV文件的表头，包含10个Normalized Properties列
-#     writer.writerow(['Sequence ID', 'Sequence'] + [f'Normalized Property {i + 1}' for i in range(10)])
-#     for i, seq in enumerate(sequences):
-#         a = calculate_properties(seq)
-#         properties_array = []
-#         if a is None:
-#             print(f"Warning: properties_dict is None for sequence {seq}. Using default zero array.")
-#             properties_array = [0.0] * 10  # 使用包含10个零的数组
-#         else:
-#             for value in a.values():
-#
-#                 if isinstance(value, tuple):
-#                     properties_array.extend(value)  # 如果是元组，展开并添加到列表中
-#                 else:
-#                     properties_array.append(value)  # 否则，直接添加到列表中
-#         normal = normalize_matrix(properties_array)
-#         #print(normal)
-#         differences = np.abs(properties - normal)
-#         # 选取后九位元素
-#         last_nine = differences[-10:]
-#
-#         # 计算后九位元素的和
-#         total_sum = np.sum(last_nine)
-#         #if np.all(last_nine < 0.2):
-#         writer.writerow([f"Sequence_{i + 1}", seq] + normal.tolist())
+    print(seq)
+    
 
 
 
